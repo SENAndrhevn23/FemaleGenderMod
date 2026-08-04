@@ -127,12 +127,22 @@ public class WildfireBreastCustomizationScreen extends BaseWildfireScreen {
         addSlider(builder -> builder
                 .message(value -> Component.translatable("wildfire_gender.wardrobe.slider.breast_size", Math.round(value * 1.25f * 100)))
                 .position(this.width / 2 - 36, tabOffsetY - 2)
-                .size(FULL_WIDTH, 20)
+                .size(HALF_WIDTH, 20)
                 .range(Configuration.BUST_SIZE)
                 .current(plr.getBustSize())
                 .update(plr::updateBustSize)
                 .step(0.01)
                 .mouseStep(0.001));
+
+        addSlider(builder -> builder
+                .message(value -> Component.translatable("wildfire_gender.wardrobe.slider.breast_scale", Math.round(value * 10f) / 10f))
+                .position(this.width / 2 - 36 + HALF_WIDTH + 4, tabOffsetY - 2)
+                .size(HALF_WIDTH, 20)
+                .range(Configuration.BREASTS_SCALE)
+                .current(breasts.getBreastScale())
+                .update(breasts::updateBreastScale)
+                .step(0.01)
+                .mouseStep(0.01));
 
         addSlider(builder -> builder
                 .message(value -> Component.translatable("wildfire_gender.wardrobe.slider.separation", Math.round((Math.round(value * 100f) / 100f) * 10)))

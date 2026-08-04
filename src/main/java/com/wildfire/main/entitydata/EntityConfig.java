@@ -124,6 +124,7 @@ public class EntityConfig {
         gender = pBustSize >= 0.02f ? Gender.FEMALE : Gender.MALE;
         breasts.updateCleavage(fromComponent.cleavage());
         breasts.updateOffsets(fromComponent.offsets());
+        breasts.updateBreastScale(fromComponent.breastScale());
         this.jacketLayer = fromComponent.jacket();
     }
 
@@ -268,6 +269,7 @@ public class EntityConfig {
         info.add("Breast size: " + getBustSize());
         info.add("Physics enabled: " + hasBreastPhysics());
         var breasts = getBreasts();
+        info.add("Breast scale: " + breasts.getBreastScale() + "x");
         info.add("Uniboob: " + breasts.isUniboob());
         info.add("Cleavage: " + breasts.getCleavage());
         info.add("Offsets: (" + breasts.getXOffset() + ", " + breasts.getYOffset() + ", " + breasts.getZOffset() + ")");

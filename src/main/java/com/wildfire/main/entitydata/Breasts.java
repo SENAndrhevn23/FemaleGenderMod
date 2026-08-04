@@ -37,13 +37,15 @@ public final class Breasts {
             ByteBufCodecs.FLOAT, Breasts::getZOffset,
             ByteBufCodecs.BOOL, Breasts::isUniboob,
             ByteBufCodecs.FLOAT, Breasts::getCleavage,
-            (x, y, z, uniboob, cleavage) -> {
+            ByteBufCodecs.FLOAT, Breasts::getBreastScale,
+            (x, y, z, uniboob, cleavage, breastScale) -> {
                 Breasts breasts = new Breasts();
                 breasts.xOffset = x;
                 breasts.yOffset = y;
                 breasts.zOffset = z;
                 breasts.cleavage = cleavage;
                 breasts.uniboob = uniboob;
+                breasts.breastScale = breastScale;
                 return breasts;
             }
     );
@@ -53,6 +55,7 @@ public final class Breasts {
             zOffset = Configuration.BREASTS_OFFSET_Z.getDefault();
     private float cleavage = Configuration.BREASTS_CLEAVAGE.getDefault();
     private boolean uniboob = Configuration.BREASTS_UNIBOOB.getDefault();
+    private float breastScale = Configuration.BREASTS_SCALE.getDefault();
 
     private <VALUE> boolean updateValue(ConfigKey<VALUE> key, VALUE value, Consumer<VALUE> setter) {
         if (key.validate(value)) {
@@ -136,6 +139,21 @@ public final class Breasts {
         return updateValue(Configuration.BREASTS_UNIBOOB, value, v -> this.uniboob = v);
     }
 
+    /// How much the player's breasts should be scaled up by, also referred to as Scale in the UI
+    ///
+    /// @implNote A value of `1f` renders the breasts at their normal size, while values greater than `1f`
+    ///          scale them up as a separate multiplier on top of the regular breast size.
+    ///
+    /// @return  A `float` between `1f` and `10f`
+    public float getBreastScale() {
+        return breastScale;
+    }
+
+    /// @see #getBreastScale()
+    public boolean updateBreastScale(float value) {
+        return updateValue(Configuration.BREASTS_SCALE, value, v -> this.breastScale = v);
+    }
+
     /// Copy settings from the provided [`breasts data`][Breasts] onto the current instance
     public void copyFrom(Breasts breasts) {
         this.xOffset = breasts.xOffset;
@@ -143,5 +161,6 @@ public final class Breasts {
         this.zOffset = breasts.zOffset;
         this.cleavage = breasts.cleavage;
         this.uniboob = breasts.uniboob;
+        this.breastScale = breasts.breastScale;
     }
 }

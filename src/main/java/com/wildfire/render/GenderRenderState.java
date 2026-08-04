@@ -127,6 +127,7 @@ public class GenderRenderState {
         public final float zOffset;
         public final float cleavage;
         public final boolean uniboob;
+        public final float breastScale;
 
         private BreastState(Breasts breasts) {
             this.xOffset = breasts.getXOffset();
@@ -134,6 +135,7 @@ public class GenderRenderState {
             this.zOffset = breasts.getZOffset();
             this.cleavage = breasts.getCleavage();
             this.uniboob = breasts.isUniboob();
+            this.breastScale = breasts.getBreastScale();
         }
     }
 

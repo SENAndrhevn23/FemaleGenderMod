@@ -64,7 +64,8 @@
     "wildfire_gender.breast_customization.presets.add_new": "Add New...",
     "wildfire_gender.breast_customization.presets.delete": "Delete",
 
-    "wildfire_gender.wardrobe.slider.breast_size": "Breast Size: %s%%",
+"wildfire_gender.wardrobe.slider.breast_size": "Breast Size: %s%%",
+    "wildfire_gender.wardrobe.slider.breast_scale": "Breast Scale: %sx",
     "wildfire_gender.wardrobe.slider.separation": "Separation: %s",
     "wildfire_gender.wardrobe.slider.height": "Height: %s",
     "wildfire_gender.wardrobe.slider.depth": "Depth: %s",

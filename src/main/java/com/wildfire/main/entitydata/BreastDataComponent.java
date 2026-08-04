@@ -35,7 +35,7 @@ import org.jspecify.annotations.Nullable;
 /// Note that while this is treated similarly to any other [`data component`][DataComponents] for performance reasons,
 /// this is never written as its own component on item stacks, but instead uses the [`custom NBT data component`][DataComponents#CUSTOM_DATA]
 /// (under the `WildfireGender` key) for compatibility with vanilla clients on servers.
-public record BreastDataComponent(float breastSize, float cleavage, Vector3f offsets, boolean jacket, @Nullable CustomData nbtComponent) {
+public record BreastDataComponent(float breastSize, float cleavage, Vector3f offsets, boolean jacket, float breastScale, @Nullable CustomData nbtComponent) {
 
     private static final String KEY = "WildfireGender";
     private static final Codec<BreastDataComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -56,8 +56,11 @@ public record BreastDataComponent(float breastSize, float cleavage, Vector3f off
                     .forGetter(component -> component.offsets.y),
             Configuration.BREASTS_OFFSET_Z.codec()
                     .optionalFieldOf("ZOffset", 0f)
-                    .forGetter(component -> component.offsets.y)
-        ).apply(instance, (breastSize, cleavage, jacket, x, y, z) -> new BreastDataComponent(breastSize, cleavage, new Vector3f(x, y, z), jacket, null))
+                    .forGetter(component -> component.offsets.z),
+            Configuration.BREASTS_SCALE.codec()
+                    .optionalFieldOf("BreastScale", Configuration.BREASTS_SCALE.getDefault())
+                    .forGetter(BreastDataComponent::breastScale)
+        ).apply(instance, (breastSize, cleavage, jacket, x, y, z, breastScale) -> new BreastDataComponent(breastSize, cleavage, new Vector3f(x, y, z), jacket, breastScale, null))
     );
 
     public static @Nullable BreastDataComponent fromPlayer(Player player, PlayerConfig config) {
@@ -66,7 +69,7 @@ public record BreastDataComponent(float breastSize, float cleavage, Vector3f off
         }
 
         return new BreastDataComponent(config.getBustSize(), config.getBreasts().getCleavage(), config.getBreasts().getOffsets(),
-                player.isModelPartShown(PlayerModelPart.JACKET), null);
+                player.isModelPartShown(PlayerModelPart.JACKET), config.getBreasts().getBreastScale(), null);
     }
 
     public static @Nullable BreastDataComponent fromComponent(@Nullable CustomData component) {
@@ -97,6 +100,6 @@ public record BreastDataComponent(float breastSize, float cleavage, Vector3f off
     }
 
     private BreastDataComponent withComponent(CustomData component) {
-        return new BreastDataComponent(breastSize, cleavage, offsets, jacket, component);
+        return new BreastDataComponent(breastSize, cleavage, offsets, jacket, breastScale, component);
     }
 }

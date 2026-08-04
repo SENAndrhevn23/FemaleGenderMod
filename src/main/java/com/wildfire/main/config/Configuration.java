@@ -43,6 +43,7 @@ public class Configuration extends AbstractConfiguration {
 
     public static final EnumConfigKey<Gender> GENDER = new EnumConfigKey<>("gender", Gender.MALE, Gender.BY_ID);
     public static final FloatConfigKey BUST_SIZE = new FloatConfigKey("bust_size", 0.6F, 0, 0.8f);
+    public static final FloatConfigKey BREASTS_SCALE = new FloatConfigKey("breasts_scale", 1.0F, 1.0f, 10.0f);
     public static final BooleanConfigKey HURT_SOUNDS = new BooleanConfigKey("hurt_sounds", true);
     public static final FloatConfigKey VOICE_PITCH = new FloatConfigKey("voice_pitch", 1F, 0.8f, 1.2f);
 
@@ -111,6 +112,7 @@ public class Configuration extends AbstractConfiguration {
             new RegisteredKey<>(BREASTS_OFFSET_Z, Breasts::getZOffset, Breasts::updateZOffset),
             new RegisteredKey<>(BREASTS_UNIBOOB, Breasts::isUniboob, Breasts::updateUniboob),
             new RegisteredKey<>(BREASTS_CLEAVAGE, Breasts::getCleavage, Breasts::updateCleavage),
+            new RegisteredKey<>(BREASTS_SCALE, Breasts::getBreastScale, Breasts::updateBreastScale),
 
             new RegisteredKey<>(BREAST_PHYSICS, PlayerConfig::hasBreastPhysics, PlayerConfig::updateBreastPhysics),
             new RegisteredKey<>(SHOW_IN_ARMOR, PlayerConfig::showBreastsInArmor, PlayerConfig::updateShowBreastsInArmor),
