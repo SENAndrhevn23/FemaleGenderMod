@@ -10,6 +10,8 @@
 
 This mod adds extra customization options to the player model by adding breasts for a more feminine appearance.
 
+This build also includes an optional replacement chest mesh integrated from the supplied OBJ model. The mesh uses the player skin/jacket texture through the normal Minecraft entity render pipeline, so it does not require an additional texture pack.
+
 This mod is primarily client-sided, but your settings will also be automatically synced with other connected players
 if the mod is also installed on the server.
 

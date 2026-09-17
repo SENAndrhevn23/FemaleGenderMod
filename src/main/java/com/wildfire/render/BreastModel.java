@@ -3,16 +3,16 @@
  * Copyright (C) 2023-present WildfireRomeo
  *
  * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
+ * modify it under the terms of the GNU Lesser General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
@@ -35,15 +35,27 @@ public class BreastModel extends Model<HumanoidRenderState> {
         return part.getRoot().bake(64, 64);
     });
 
-    private final WildfireModelRenderer.ModelBox model;
+    private final WildfireModelRenderer.ModelBox box;
+    private final NewChestMesh.Mesh mesh;
 
-    public BreastModel(WildfireModelRenderer.ModelBox model) {
+    public BreastModel(WildfireModelRenderer.ModelBox box) {
         super(DUMMY_PART, RenderTypes::entityCutout);
-        this.model = model;
+        this.box = box;
+        this.mesh = null;
+    }
+
+    public BreastModel(NewChestMesh.Mesh mesh) {
+        super(DUMMY_PART, RenderTypes::entityCutout);
+        this.box = null;
+        this.mesh = mesh;
     }
 
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int light, int overlay, int color) {
-        WildfireModelRenderer.renderBox(model, poseStack.last(), vertexConsumer, light, overlay, color);
+        if(mesh != null) {
+            WildfireModelRenderer.renderMesh(mesh, poseStack.last(), vertexConsumer, light, overlay, color);
+        } else if(box != null) {
+            WildfireModelRenderer.renderBox(box, poseStack.last(), vertexConsumer, light, overlay, color);
+        }
     }
 }

@@ -1,0 +1,32 @@
+newmtl Chesttop21Mtl
+Material Color
+Ka 1 0.320382 0.722672
+Kd 1 0.320382 0.722672
+Ks 0.396078 0.126896 0.286235 
+
+d 1
+
+Ns 0
+
+map_Ka Chesttop21_diff.png
+map_Kd Chesttop21_diff.png
+map_d Chesttop21_diff.png
+
+map_Bump Chesttop21_nmap.png
+
+newmtl Rightcircle1Mtl
+Material Color
+Ka 0.827726 0.487765 0.293216
+Kd 0.827726 0.487765 0.293216
+Ks 0.327844 0.193193 0.116137 
+
+d 1
+
+Ns 0
+
+map_Ka Chesttop21_diff.png
+map_Kd Chesttop21_diff.png
+map_d Chesttop21_diff.png
+
+map_Bump Chesttop21_nmap.png
+

@@ -25,8 +25,6 @@ import com.wildfire.main.WildfireHelper;
 import com.wildfire.main.config.ClientConfig;
 import com.wildfire.main.uvs.UVLayout;
 import com.wildfire.mixins.accessors.LivingEntityRendererAccessor;
-import com.wildfire.render.WildfireModelRenderer.BreastModelBox;
-import com.wildfire.render.WildfireModelRenderer.OverlayModelBox;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.HumanoidModel;
@@ -41,7 +39,6 @@ import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.UnknownNullability;
 import org.joml.Quaternionf;
 
 import java.util.Objects;
@@ -53,11 +50,6 @@ import org.jspecify.annotations.Nullable;
 public class GenderLayer<S extends HumanoidRenderState, M extends HumanoidModel<S>> extends RenderLayer<S, M> {
 
     private static final float DEG_TO_RAD = (float) (Math.PI / 180);
-
-    @UnknownNullability("null until #resizeBox() is first called")
-    private BreastModelBox lBreast, rBreast;
-    @UnknownNullability("null until #resizeBox() is first called")
-    private OverlayModelBox lBreastWear, rBreastWear;
 
     private @Nullable UVLayout prevLeftBreastUVLayout, prevRightBreastUVLayout,
         prevLeftBreastOverlayUVLayout, prevRightBreastOverlayUVLayout;
@@ -142,8 +134,6 @@ public class GenderLayer<S extends HumanoidRenderState, M extends HumanoidModel<
         outwardAngle = Math.round(breasts.cleavage * 100f);
         outwardAngle = Math.min(outwardAngle, 10);
 
-        resizeBox(genderState, bSize);
-
         lPhysPositionY = leftPhysicsState.getPositionY();
         lPhysPositionX = leftPhysicsState.getPositionX();
         lPhysBounceRotation = leftPhysicsState.getBounceRotation();
@@ -181,24 +171,6 @@ public class GenderLayer<S extends HumanoidRenderState, M extends HumanoidModel<
         return !state.isInvisibleToPlayer || state.appearsGlowing();
     }
 
-    protected void resizeBox(GenderRenderState state, float breastSize) {
-        //TODO: Better way for this?
-        if(!Objects.equals(this.prevLeftBreastUVLayout, state.leftBreastUVLayout)
-                || !Objects.equals(this.prevRightBreastUVLayout, state.rightBreastUVLayout)
-                || !Objects.equals(this.prevLeftBreastOverlayUVLayout, state.leftBreastOverlayUVLayout)
-                || !Objects.equals(this.prevRightBreastOverlayUVLayout, state.rightBreastOverlayUVLayout)) {
-
-            this.prevLeftBreastUVLayout = state.leftBreastUVLayout;
-            this.prevRightBreastUVLayout = state.rightBreastUVLayout;
-            this.prevLeftBreastOverlayUVLayout = state.leftBreastOverlayUVLayout;
-            this.prevRightBreastOverlayUVLayout = state.rightBreastOverlayUVLayout;
-
-            this.lBreast = new BreastModelBox(64, 64, -4F, 0.0F, 0F, 4, 5, 3, 0.0F, state.leftBreastUVLayout);
-            this.rBreast = new BreastModelBox(64, 64, 0F, 0.0F, 0F, 4, 5, 3, 0.0F, state.rightBreastUVLayout);
-            this.lBreastWear = new OverlayModelBox(64, 64, -4F, 0.0F, 0F, 4, 5, 3, 0.0F, state.leftBreastOverlayUVLayout);
-            this.rBreastWear = new OverlayModelBox(64, 64, 0, 0.0F, 0F, 4, 5, 3, 0.0F, state.rightBreastOverlayUVLayout);
-        }
-    }
 
     protected void setupTransformations(S state, M model, PoseStack matrixStack, BreastSide side) {
         if(state.isBaby) {
@@ -264,13 +236,13 @@ public class GenderLayer<S extends HumanoidRenderState, M extends HumanoidModel<
         int alpha = state.isInvisible ? ARGB.as8BitChannel(0.15f) : 255;
         int color = ARGB.color(alpha, 255, 255, 255);
 
-        var model = side.isLeft ? lBreast : rBreast;
+        var model = side.isLeft ? NewChestMesh.left(false) : NewChestMesh.right(false);
         collector.order(1).submitModel(new BreastModel(model), state, poseStack, type, state.lightCoords, overlay, color, null, state.outlineColor, null);
 
         if(state instanceof AvatarRenderState playerState && playerState.showJacket) {
             poseStack.translate(0, 0, -0.015f);
             poseStack.scale(1.05f, 1.05f, 1.05f);
-            var jacketModel = side.isLeft ? lBreastWear : rBreastWear;
+            var jacketModel = side.isLeft ? NewChestMesh.left(true) : NewChestMesh.right(true);
             collector.order(2).submitModel(new BreastModel(jacketModel), state, poseStack, type, state.lightCoords, overlay, color, null, state.outlineColor, null);
         }
     }

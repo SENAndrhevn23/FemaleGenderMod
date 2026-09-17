@@ -62,6 +62,21 @@ public final class WildfireModelRenderer {
         }
     }
 
+    public static void renderMesh(NewChestMesh.Mesh mesh, PoseStack.Pose entry, VertexConsumer vertexConsumer,
+                                  int light, int overlay, int color) {
+        Matrix4f matrix4f = entry.pose();
+        Matrix3f matrix3f = entry.normal();
+
+        for(int i = 0; i < mesh.indices().length; i++) {
+            NewChestMesh.Vertex vertex = mesh.vertices()[mesh.indices()[i]];
+            Vector3f normal = new Vector3f(vertex.nx(), vertex.ny(), vertex.nz()).mul(matrix3f);
+            Vector4f position = new Vector4f(vertex.x() / 16.0F, vertex.y() / 16.0F, vertex.z() / 16.0F, 1.0F).mul(matrix4f);
+            vertexConsumer.addVertex(position.x(), position.y(), position.z(), color,
+                    vertex.u() / 64.0F, vertex.v() / 64.0F, overlay, light,
+                    normal.x(), normal.y(), normal.z());
+        }
+    }
+
     public static class ModelBox {
         public final WildfireModelRenderer.TexturedQuad[] quads;
         public final float posX1;
