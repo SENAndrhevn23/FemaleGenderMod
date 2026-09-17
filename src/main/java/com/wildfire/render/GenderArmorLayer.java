@@ -64,7 +64,7 @@ public class GenderArmorLayer<S extends HumanoidRenderState, M extends HumanoidM
     private final EquipmentAssetManager equipmentModelLoader;
     protected static final BreastModelBox lTrim, rTrim;
 
-    @UnknownNullability("null until #resizeBox() is first called")
+    @UnknownNullability("null until armor geometry is first needed")
     protected BreastModelBox lBoobArmor, rBoobArmor;
     @UnknownNullability("null until first render pass")
     private GenderRenderState genderRenderState;
@@ -121,6 +121,8 @@ public class GenderArmorLayer<S extends HumanoidRenderState, M extends HumanoidM
             if(!setupRender(state, this.genderRenderState)) return;
             if(state instanceof ArmorStandRenderState && !genderRenderState.armor.armorStandsCopySettings()) return;
 
+            resizeBox(this.genderRenderState);
+
             int color = DyedItemColor.getOrDefault(chestplate, 0);
 
             renderSides(state, getParentModel(), matrixStack, side -> {
@@ -149,8 +151,7 @@ public class GenderArmorLayer<S extends HumanoidRenderState, M extends HumanoidM
         return genderArmor.coversBreasts();
     }
 
-    @Override
-    protected void resizeBox(GenderRenderState state, float breastSize) {
+    private void resizeBox(GenderRenderState state) {
         if(lBoobArmor != null && rBoobArmor != null && Objects.equals(textureData, genderArmor.texture())) {
             return;
         }
